@@ -1,24 +1,20 @@
-import knex from "knex";
-import express from "express";
-import router from "./router.js"
-import 'dotenv/config';
+import express from 'express';
+import dotenv from 'dotenv';
+import router from './router.js';
+
+dotenv.config();
 
 const app = express();
-const port = 3000;
-export let table1 = "user";
-export let table2 = "package";
-export let table3 = "file";
-export let table4 = "file_has_package";
+const PORT = process.env.DB_PORT;
 
 app.use(express.json());
-app.use(router);
+app.use('/api',router);
 
-
-
-app.get("/", (req, res) => {
-  res.status(200).send("Initial page");
+app.get(`/`, async (req, res) => {
+  res.send(`Hello World`)
+  console.log(`Rota '/' rodando`);
 });
 
-app.listen(port, () => {
-  console.log(`Server on port: ${ port}`);
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
