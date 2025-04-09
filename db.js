@@ -1,5 +1,5 @@
 import knex from 'knex';
-import condig from "./database/knexfile.js";
+import config from "./database/knexfile.js";
 
 const db = knex(config.development);
 
