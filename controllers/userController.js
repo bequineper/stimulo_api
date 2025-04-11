@@ -99,13 +99,34 @@ export async function adminGetUser (req,res) {
             .where({id: getUser})
             .select('id','name','email','birthday','avatar','is_admin')
             .first();
+            
+            if(!user){
+                return res.status(404).json({message: `Usuário nao foi encontrado`})
+            }
+            res.status(200).json({user})
+            
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({message: `Não foi possivel encontrar os dados do usuário`});
+        }  
+    } else{
+        res.status(403).json({message: `Você não tem a permissão necessária para acessar esses dados`})
 
-    } catch (error) {
-        
-    }  
     }
     
 }
+
+export async function adminGetAllUsers (req, res){
+    const users = await db(`user`).select(`*`);
+    try {
+        res.status(200).json({users})
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message: `Erro ao buscar os usuários`})
+    }
+}
+
+
 
 
     
