@@ -1,4 +1,6 @@
 .env
 node_modules
-
+stimulo.sql
+stimulodb_workbench.mwb
+TODO.md
 

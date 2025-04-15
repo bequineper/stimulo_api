@@ -36,4 +36,9 @@ FOREIGN KEY (package_id) REFERENCES package(id)
 SELECT * FROM user;
 
 INSERT INTO user(name, birthday, email, password, is_admin)
-VALUES ("admin", '2006-03-14', "obernardoquineper@gmail.com", "adminadmin", TRUE)
+VALUES ("admin", '2000-01-01', "admin@gmail.com", "adminadmin", TRUE)
+
+ALTER TABLE file
+ADD COLUMN content TEXT,
+ADD COLUMN created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
