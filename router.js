@@ -4,7 +4,9 @@ import {
   registerUser, 
   getUserProfile,
   adminGetUser,
-  adminGetAllUsers
+  adminGetAllUsers,
+  
+
 
 } from './controllers/userController.js';
 import {
@@ -36,8 +38,9 @@ const router = Router();
 
 
 // Admin Routes
-router.get (`/admin/users`,authenticateToken, isAdmin, adminGetAllUsers)
+router.get (`/admin/users`,authenticateToken, isAdmin, adminGetAllUsers);
 router.get  ('/admin/:id', authenticateToken, adminGetUser);
+// router.delete (`/admin/:id`, authenticateToken, isAdmin, adminDeleteUser);
 
 
 // User routes
