@@ -1,24 +1,30 @@
-import { decrypt } from 'dotenv';
 import db from '../db.js';
-import { encrypt } from '../utils/cryptoUtils.js';
+import { encrypt, decrypt } from '../utils/cryptoUtils.js';
 
-export async function createFile(req,res) {
-    const {name, content} = req.body;
+export async function createFile(req, res) {
+    const { content } = req.body;
     const user_id = req.user.id;
 
-    if (!name.endsWith('.md')) {
-        name += '.md';
-    }
-    
     try {
         const encryptedContent = encrypt(content);
-        const [id] = await db('file').insert({name, user_id, content: encryptedContent});
-        res.status(201).json({id, name});
+
+        const [id] = await db('file').insert({
+            name: '', 
+            user_id,
+            content: encryptedContent
+        });
+
+        const name = `File_${id}`;
+
+        await db('file').where({ id }).update({ name });
+
+        res.status(201).json({ id, name });
     } catch (err) {
         console.error(err);
-        res.status(500).json({Message: 'Erro ao criar arquivo' });
+        res.status(500).json({ Message: 'Erro ao criar arquivo' });
     }
 }
+
 
 export async function listFiles(req,res) {
    
@@ -42,11 +48,16 @@ export async function getFile(req,res) {
     const user_id = req.user.id;
     
     try{
+        
+        
+        
+
         const file = await db('file')
         .where({id, user_id})
         .select('id','name','content')
         .first();
         
+        console.log(file);
         if(!file)  return res.status(404).json({message: `Arquivo não encontrado`});
         
 
@@ -78,7 +89,7 @@ export async function deleteFile(req,res){
 
 export async function updateFileContent(req,res) {
     const { id } = req.params;
-    const { content } = req.body;
+    const { content} = req.body;
     const user_id = req.user.id;
 
     try {
